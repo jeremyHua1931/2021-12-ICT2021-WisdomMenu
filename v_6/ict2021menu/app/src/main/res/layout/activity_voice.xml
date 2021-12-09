@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:background="@drawable/background_main"
+    tools:context=".voice_Activity">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/msg_recycle_view"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+        <ImageButton
+            android:id="@+id/voice_button_1"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:backgroundTint="@null"
+            android:background="#00000000"
+
+            android:src="@drawable/voice_"
+            android:scaleType="centerCrop"
+
+            />
+
+        <EditText
+            android:id="@+id/input_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="请输入内容"
+            android:maxLines="2"
+            />
+
+        <Button
+            android:id="@+id/send"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="发送"
+            android:background="#1E8F34"
+            android:textColor="#fff"/>
+    </LinearLayout>
+</LinearLayout>

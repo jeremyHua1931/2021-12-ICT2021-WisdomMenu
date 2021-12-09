@@ -1,0 +1,145 @@
+package com.example.ict2021menu;
+
+import android.annotation.SuppressLint;
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.ict2021menu.utils.toastUtil;
+
+
+/*
+主界面处理, 内容:
+1.点击头像实现侧滑菜单, 再次点击头像返回主界面;
+2.今日推荐=>随机推荐菜品??
+3.智能交互=>问答系统
+4.开始做饭=>启用摄像头进行开始扫描食材,推荐菜品
+5.语音助手=>语音对话,识别后,跳转到交互窗口,返回结果
+ */
+public class home_Activity extends AppCompatActivity {
+
+    //声明控件
+
+    private SlideMenu slideMenu;
+
+    private Button recommend;
+    private Button intelligent_interaction;
+    private Button startCooking;
+    private Button voice_help;
+    private Button back;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_home);
+
+        /*1-找到控件*/
+
+        // (1)实现点击头像展开侧滑菜单
+        ImageView mIvHead = findViewById(R.id.iv_head);
+        slideMenu=findViewById(R.id.slideMenu);
+
+        //(2)找到今日推荐,智能交互,开始做饭,语音助手按钮
+        recommend=findViewById(R.id.button_recommend);
+        intelligent_interaction=findViewById(R.id.button_voice);
+        startCooking=findViewById(R.id.button_start);
+        voice_help=findViewById(R.id.button_voice_2);
+
+        back=findViewById(R.id.button_menu_6);
+
+
+        /*2-实现主要功能*/
+
+        //(1)实现侧滑,点击头像侧滑
+        mIvHead.setOnClickListener(v -> slideMenu.switchMenu());
+
+        //(2)对今日推荐,语音交互,语音助手,开始做饭按钮进行监控
+        setListener();
+    }
+
+
+    //对对今日推荐,语音交互,开始做饭,语音助手 按钮进行监控,点击进行操作,所以统一处理
+    private void setListener(){
+        //onclick
+        OnClick onClick=new OnClick();
+
+        //对每一个按钮进行
+        recommend.setOnClickListener(onClick);
+        intelligent_interaction.setOnClickListener(onClick);
+        startCooking.setOnClickListener((onClick));
+        voice_help.setOnClickListener(onClick);
+        back.setOnClickListener(onClick);
+    }
+
+    //对对今日推荐,语音交互,开始做饭三个按钮进行监控
+    private class OnClick implements View.OnClickListener{
+
+        @SuppressLint("NonConstantResourceId")
+        @Override
+        public void onClick(View v) {
+            Intent intent =null;
+
+            if(v.getId()==R.id.button_menu_6){
+              gotoDesk();
+
+            }
+
+            switch(v.getId()){
+                //(1)处理今日推荐按钮
+                case R.id.button_recommend:
+                    intent =new Intent(home_Activity.this,recommend_Activity.class);
+                    break;
+                case R.id.button_voice:
+                    //直接跳转到聊天界面
+                    intent =new Intent(home_Activity.this,voice_Activity.class);
+                    break;
+                case R.id.button_voice_2:
+                    //进行语音识别,跳转到聊天界面
+
+                    Hold_to_talk();
+
+                    intent =new Intent(home_Activity.this,voice_Activity.class);
+                    break;
+                case R.id.button_start:
+
+                    intent =new Intent(home_Activity.this,startCooking_Activity.class);
+                    break;
+
+            }
+            startActivity(intent);
+        }
+    }
+
+    public void Hold_to_talk(){
+        String tip="请按住说话";
+        toastUtil.showMsg(getApplicationContext(),tip);
+
+        try {
+            Thread.sleep(1000); //1000 毫秒，也就是1秒.
+        } catch(InterruptedException ex) {
+            Thread.currentThread().interrupt();
+        }
+
+        speech_recognition();
+    }
+
+
+    public void speech_recognition (){
+
+    }
+
+    //返回桌面
+    public void gotoDesk(){
+        Toast.makeText(getApplicationContext(), "返回桌面", Toast.LENGTH_LONG).show();
+        Intent intent=new Intent();
+        intent.setAction("android.intent.action.MAIN");
+        intent.addCategory("android.intent.category.HOME");
+        intent.addCategory("android.intent.category.DEFAULT");
+        intent.addCategory("android.intent.category.MONKEY");
+        startActivity(intent);}
+}
